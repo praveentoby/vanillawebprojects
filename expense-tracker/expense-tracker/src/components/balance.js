@@ -7,7 +7,7 @@ class Balance extends Component {
         return ( 
             <React.Fragment>
                 <h2>Expense Tracker</h2>
-                <div class="container">
+                <div className="container">
                     <h4>Your Balance</h4>
                     <h1 id="balance">$0.00</h1>
                 </div>
