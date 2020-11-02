@@ -5,14 +5,14 @@ class IncExp extends Component {
     render() { 
         return (  
             <React.Fragment>
-                 <div className="inc-exp-container">
+                <div className = "inc-exp-container">
                         <div>
                         <h4>Income</h4>
-                        <p id="money-plus" className="money plus">+$0.00</p>
+                        <p id="money-plus" className="money plus">+{this.state.totalIncome}</p>
                         </div>
                         <div>
                         <h4>Expense</h4>
-                        <p id="money-minus" className="money minus">-$0.00</p>
+                        <p id="money-minus" className="money minus">-{this.state.totalExpense}</p>
                         </div>
                     </div>
             </React.Fragment>

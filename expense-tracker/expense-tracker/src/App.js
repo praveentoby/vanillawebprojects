@@ -1,18 +1,12 @@
 // import './App.css';
 import './style.css';
-
-import Balance from './components/balance';
-import IncExp from './components/inc_exp';
-import History from './components/history';
-import AddDeleteIncExp from './components/add_delete';
+import ExpenseTracker from './components/expense_tracker';
 
 function App() {
+  
   return (
     <div className="App">
-     <Balance/>
-     <IncExp/>
-     <History/>
-     <AddDeleteIncExp/>
+      <ExpenseTracker/>
     </div>
   );
 }
