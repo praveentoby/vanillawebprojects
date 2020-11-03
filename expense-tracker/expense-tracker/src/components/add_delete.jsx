@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import Balance from './balance';
 import IncExp from './inc_exp';
-// import History from './history';
+import History from './history';
+
 
 class AddDelete extends Component {
+
     state = 
     {
       transaction :[],
@@ -12,7 +14,7 @@ class AddDelete extends Component {
       totalIncome: 0,
       totalExpense: 0,
       totalBalance: 0,
-      selectedOption: null,
+      setSign:'plus',
     }
     input_text(value) {
       this.setState({
@@ -34,10 +36,10 @@ class AddDelete extends Component {
         id:Math.floor(Math.random() * 100000000),
         text: this.state.text,
         amount: this.state.amount,
+        type: this.state.setSign,
         }
         let transaction = this.state.transaction
         transaction.push(item);
-
         this.setState({
           transaction,
           text : '',
@@ -46,6 +48,13 @@ class AddDelete extends Component {
         })
 
         this.calculate_balance();
+        if(this.state.setSign === 'plus')
+        {
+          this.calculate_income();
+        }else{
+          this.calculate_expense();
+        }  
+
       }
     }
     delete_transaction(e){
@@ -61,7 +70,7 @@ class AddDelete extends Component {
     {
       let totalBalance = 0;
       this.state.transaction.map((curr) => {
-        totalBalance +=  Number(curr.amount);
+        (curr.type === 'plus')?totalBalance +=  Number(curr.amount): totalBalance -= Number(curr.amount)
       })
       this.setState({
          totalBalance : totalBalance,
@@ -69,20 +78,28 @@ class AddDelete extends Component {
     }
     calculate_income()
     {
+      console.log('calculating income')
       let totalIncome = 0;
-      this.state.transaction.map((curr) => {
-        totalIncome +=  Number(curr.amount);
+      this.state.transaction.map(curr => {
+        console.log(curr.type)
+      if(curr.type ==='plus')
+      totalIncome +=  Number(curr.amount)
       })
+      console.log(totalIncome)
       this.setState({
         totalIncome : totalIncome,
       })
     }
     calculate_expense()
     {
+      console.log('calculating expense')
       let totalExpense = 0;
-      this.state.transaction.map((curr) => {
+      this.state.transaction.map(curr => {
+        console.log(curr.type)
+        if(curr.type ==='minus')
         totalExpense +=  Number(curr.amount);
       })
+      console.log(totalExpense)
       this.setState({
         totalExpense : totalExpense,
       })
@@ -93,28 +110,25 @@ class AddDelete extends Component {
         selectedOption: event,
       });
     }
+    setGender(event) {
+      this.setState({
+        setSign:event.target.value,
+      });
+    }
+      
     render() 
     { 
         return ( 
             <React.Fragment>
              <Balance totalBalance={this.state.totalBalance}/>
-             <IncExp />
+             <IncExp 
+             income={this.state.totalIncome}
+             expense={this.state.totalExpense}
+             />
            
-            <h3>History</h3>
-                  <ul id="list" className="list">
-                    {
-                      this.state.transaction.map((current, key) => {
-                        return(
-                          <li key={current.id}  className="minus">
-                          {current.text} <span>{current.amount}</span>
-                          <button  data-id={key}
-                          onClick = {(e) => this.delete_transaction(e.target.dataset['id'])}
-                          className="delete-btn">x</button>
-                         </li> 
-                        )
-                      })
-                    }
-                  </ul>
+             <History
+               transaction={this.state.transaction}
+             />
                 <h3>Add new transaction</h3>
                
                   <div className="form-control">
@@ -125,22 +139,13 @@ class AddDelete extends Component {
                     />
                   </div>
                   <div className="radio">
-                  <label> +
-                    <input
-                      type="radio" value="plus" className="form-control"
-                      checked={this.state.selectedOption === "Male"}
-                      onChange={e => this.onValueChange(e.target.value)}
-                    />
-                    </label>
-
-                    <label> -
-                      <input
-                        type="radio" value="minus" className="form-control"
-                        checked={this.state.selectedOption === "Female"}
-                        onChange={e => this.onValueChange(e.target.value)}
-                      />
+                 
+                    <div onChange={this.setGender.bind(this)}>
+                      <input type="radio" value="plus" name="gender" defaultChecked/> +
+                      <input type="radio" value="minus" name="gender"/> -
+                    </div>
+                   
                     
-                    </label>
                   </div>
 
   
